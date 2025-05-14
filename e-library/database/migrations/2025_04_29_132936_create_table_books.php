@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('Book Name');
             $table->string('Author');
             $table->string('Description')->nullable();
-            $table->year('Publish Year');
-            $table->text('Number Of Pages');
+            $table->year('Publication Year');
+            $table->text('Page Count');
             $table->timestamps();
         });
     }
