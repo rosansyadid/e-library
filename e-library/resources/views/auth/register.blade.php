@@ -279,6 +279,23 @@
             margin-right: 0.5rem;
             color: var(--light-text);
         }
+        
+        /* Added styling for error messages */
+        .error-message {
+            color: var(--danger-color);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background-color: rgba(239, 68, 68, 0.1);
+            border-radius: 6px;
+        }
+        
+        .form-error {
+            color: var(--danger-color);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
 
         @media (max-width: 768px) {
             .auth-container {
@@ -317,27 +334,46 @@
                 <p>Fill in the details to register</p>
             </div>
             
+            @if($errors->any())
+                <div class="error-message">
+                    @foreach($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
+            
             <form action="{{ route('register') }}" method="POST">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="Name">Name</label>
-                        <input type="text" id="firstName" class="form-control" placeholder="Enter name" value="{{ old('name') }}" required>
-                    </div>
+                @csrf
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter name" value="{{ old('name') }}" required>
+                    @error('name')
+                        <div class="form-error">{{ $message }}</div>
+                    @enderror
                 </div>
                 
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" class="form-control" placeholder="Enter your email" value="{{ old('email') }}" required>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" value="{{ old('email') }}" required>
+                    @error('email')
+                        <div class="form-error">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="confirmPassword" class="form-control" placeholder="Enter your password" required>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                    <div class="password-requirements">
+                        <p>Password must be at least 8 characters</p>
+                    </div>
+                    @error('password')
+                        <div class="form-error">{{ $message }}</div>
+                    @enderror
                 </div>
                 
                 <div class="form-group">
-                    <label for="confirmPassword">Confirm Password</label>
-                    <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+                    <label for="password_confirmation">Confirm Password</label>
+                    <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" placeholder="Confirm your password" required>
                 </div>
                 
                 <div class="form-check">
@@ -351,10 +387,10 @@
             <div class="divider">Or register with</div>
             
             <div class="social-login">
-                <button class="social-btn">
+                <button type="button" class="social-btn">
                     <i class="fab fa-google"></i> Google
                 </button>
-                <button class="social-btn">
+                <button type="button" class="social-btn">
                     <i class="fab fa-microsoft"></i> Microsoft
                 </button>
             </div>

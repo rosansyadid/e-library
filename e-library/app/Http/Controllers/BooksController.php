@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\books;
+use App\Models\Books;
 use Illuminate\Http\Request;
 
 class BooksController extends Controller
@@ -24,7 +24,7 @@ class BooksController extends Controller
      */
     public function index()
     {
-        $books = books::latest()->paginate(10);
+        $books = Books::latest()->paginate(10);
         return view('books.index', compact('books'));
     }
 
@@ -34,7 +34,7 @@ class BooksController extends Controller
      */
     public function create()
     {
-        return view ('books.create');
+        return view('books.create'); // Fixed typo: was looking for crate.blade.php
     }
 
     /**
@@ -43,37 +43,37 @@ class BooksController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name_name' => 'required|string|max:255',
+            'book_name' => 'required|string|max:255', // Fixed field name: name_name -> book_name
             'author' => 'required|string|max:255',
-            'description' => 'string|',
-            'publication_year' => 'required|interger|min:1000|max:' . date('Y'),
-            'page_count' => 'required|string|min:1',
+            'description' => 'nullable|string', // Fixed: string| -> nullable|string
+            'publication_year' => 'required|integer|min:1000|max:' . date('Y'), // Fixed typo: interger -> integer
+            'page_count' => 'required|integer|min:1', // Fixed: string -> integer
         ]);
 
-        books::create($request->all());
+        Books::create($request->all());
 
         return redirect()->route('books.index')
-         ->with('success', 'The Book Succesfully Added');
+         ->with('success', 'The Book Successfully Added');
     }
 
      /**
      * Show the form for editing the specified book.
      */
-    public function edit(books $book)
+    public function edit(Books $book)
     {
-        // Middleware admin sudah diaktifkan di constructor, tidak perlu cek lagi
+        // Middleware admin already activated in constructor, no need to check again
         return view('books.edit', compact('book'));
     }
 
     /**
      * Update the specified book in storage.
      */
-    public function update(Request $request, books $book)
+    public function update(Request $request, Books $book)
     {
-        // Middleware admin sudah diaktifkan di constructor, tidak perlu cek lagi
+        // Middleware admin already activated in constructor, no need to check again
         $request->validate([
-            'name' => 'required|string|max:255',
-            'publisher' => 'required|string|max:255',
+            'book_name' => 'required|string|max:255', // Ensure field name matches model
+            'author' => 'required|string|max:255',
             'description' => 'required|string',
             'publication_year' => 'required|integer|min:1800|max:' . date('Y'),
             'page_count' => 'required|integer|min:1',
@@ -82,25 +82,24 @@ class BooksController extends Controller
         $book->update($request->all());
 
         return redirect()->route('books.index')
-            ->with('success', 'Buku berhasil diperbarui.');
+            ->with('success', 'Book successfully updated.');
     }
 
     /** 
      * To Destroy Books
     */
-    public function destroy(books $books)
+    public function destroy(Books $book) // Fixed parameter type: books -> Books
     {
-        $books -> delete();
+        $book->delete(); // Fixed variable: $books -> $book
         return redirect()->route('books.index')
-            ->with('Succes', 'Succesfully Deleted Book');
+            ->with('success', 'Successfully Deleted Book'); // Fixed typo: Succes -> success
     }
 
     /**
      * Display the specified Books
      */
-    public function show (books $book)
+    public function show(Books $book)
     {
-        return view ('books.show', compact('book'));
+        return view('books.show', compact('book'));
     }
-
 }

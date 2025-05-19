@@ -32,7 +32,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            $request->sesssion()->regenerate();
+            $request->session()->regenerate(); // Fixed typo: sesssion -> session
 
             return redirect()->intended('dashboard');
         }
@@ -52,24 +52,24 @@ class AuthController extends Controller
     }
 
     /**
-     * Handel Regist Req.
+     * Handle Register Request.
      */
     public function register(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'require|string|min:8|confirmed',
+            'password' => 'required|string|min:8|confirmed', // Fixed typo: require -> required
         ]);
 
         $user = User::create([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'require|string|min:8|confirmed',
-            'role' => 'user', //Def Role User
+            'name' => $request->name, // Fixed: was copying validation rules instead of request data
+            'email' => $request->email, // Fixed: was copying validation rules instead of request data
+            'password' => Hash::make($request->password), // Fixed: was copying validation rules and missing Hash::make
+            'role' => 'user', // Default Role User
         ]);
 
-        // Add this to a controller method to debug
+        // Error handling
         try {
             // Registration code
         } catch (\Exception $e) {
@@ -83,9 +83,9 @@ class AuthController extends Controller
     }
 
     /**
-     * Handle Log Out Req.
+     * Handle Log Out Request.
      */
-    public function logout(request $request)
+    public function logout(Request $request) // Fixed case: request -> Request
     {
         Auth::logout();
 

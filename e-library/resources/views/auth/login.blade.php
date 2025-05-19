@@ -293,6 +293,17 @@
             background-color: var(--primary-color);
             color: white;
         }
+        
+        /* Added styling for error messages */
+        .error-message {
+            color: var(--danger-color);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background-color: rgba(239, 68, 68, 0.1);
+            border-radius: 6px;
+        }
 
         @media (max-width: 768px) {
             .auth-container {
@@ -327,19 +338,28 @@
                 <p>Enter your credentials to access your account</p>
             </div>
             
+            @if($errors->any())
+                <div class="error-message">
+                    @foreach($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
+            
             <form method="POST" action="{{ route('login') }}">
+                @csrf
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" value="{{ old('email') }}" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
                 </div>
                 
                 <div class="form-check">
-                    <input type="checkbox" id="remember">
+                    <input type="checkbox" id="remember" name="remember">
                     <label for="remember">Remember me</label>
                 </div>
                 
@@ -357,19 +377,17 @@
                 <div class="divider">Or continue with</div>
                 
                 <div class="social-login">
-                    <button class="social-btn">
+                    <button type="button" class="social-btn">
                         <i class="fab fa-google"></i> Google
                     </button>
-                    <button class="social-btn">
+                    <button type="button" class="social-btn">
                         <i class="fab fa-microsoft"></i> Microsoft
                     </button>
                 </div>
             </form>
             
-            
-            
             <div class="auth-footer">
-                <p>Don't have an account? <a href="register.html">Sign up</a></p>
+                <p>Don't have an account? <a href="{{ route('register') }}">Sign up</a></p>
             </div>
         </div>
     </div>
