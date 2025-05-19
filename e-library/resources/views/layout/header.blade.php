@@ -18,9 +18,23 @@
             <span class="notification-badge">3</span>
         </button>
         <div class="user-dropdown">
-            <img src="https://media.tenor.com/blwK0rdIId8AAAAj/cat-oiiaoiia-cat.gif" alt="User Avatar">
-            <span class="user-name">John Doe</span>
-            <i class="fas fa-chevron-down"></i>
+            <div class="user-dropdown">
+                <img src="https://media.tenor.com/blwK0rdIId8AAAAj/cat-meme.gif" /> {{-- Assuming this is a placeholder avatar --}}
+            
+                {{-- Logout Link/Button --}}
+                <a href="{{ route('logout') }}"
+                   class="user-name" {{-- Keep your styling class --}}
+                   onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">
+                    Log Out
+                </a>
+            
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+            
+                <i class="fas fa-chevron-down"></i>
+            </div>
         </div>
     </div>
 </header>
