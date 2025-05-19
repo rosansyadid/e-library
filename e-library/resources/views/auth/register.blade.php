@@ -115,11 +115,11 @@
         .form-row {
             display: flex;
             gap: 1rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             flex: 1;
         }
 
@@ -317,41 +317,22 @@
                 <p>Fill in the details to register</p>
             </div>
             
-            <form>
+            <form action="{{ route('register') }}" method="POST">
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="firstName">First Name</label>
-                        <input type="text" id="firstName" class="form-control" placeholder="Enter first name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="lastName">Last Name</label>
-                        <input type="text" id="lastName" class="form-control" placeholder="Enter last name" required>
+                        <label for="Name">Name</label>
+                        <input type="text" id="firstName" class="form-control" placeholder="Enter name" value="{{ old('name') }}" required>
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                    <input type="email" id="email" class="form-control" placeholder="Enter your email" value="{{ old('email') }}" required>
                 </div>
-                
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" class="form-control" placeholder="Enter phone number">
-                </div>
-                
+
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" class="form-control" placeholder="Create a password" required>
-                    <div class="password-requirements">
-                        Password requirements:
-                        <ul>
-                            <li>At least 8 characters long</li>
-                            <li>Include at least one uppercase letter</li>
-                            <li>Include at least one number</li>
-                            <li>Include at least one special character</li>
-                        </ul>
-                    </div>
+                    <input type="password" id="confirmPassword" class="form-control" placeholder="Enter your password" required>
                 </div>
                 
                 <div class="form-group">
@@ -379,7 +360,7 @@
             </div>
             
             <div class="auth-footer">
-                <p>Already have an account? <a href="login.blade.php">Sign in</a></p>
+                <p>Already have an account? <a href="{{ route('login') }}">Sign in</a></p>
             </div>
         </div>
     </div>

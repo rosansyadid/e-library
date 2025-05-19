@@ -327,7 +327,7 @@
                 <p>Enter your credentials to access your account</p>
             </div>
             
-            <form>
+            <form method="POST" action="{{ route('login') }}">
                 <div class="form-group">
                     <label for="email">Email Address</label>
                     <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
@@ -351,7 +351,7 @@
 
                 <div class="register-prompt">
                     <p>New to our library system?</p>
-                    <a href="register.html" class="btn btn-outline btn-block">Please Register</a>
+                    <a href="{{ route('register') }}" class="btn btn-outline btn-block">Please Register</a>
                 </div>
                 
                 <div class="divider">Or continue with</div>

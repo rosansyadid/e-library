@@ -36,7 +36,7 @@ class AuthController extends Controller
 
             return redirect()->intended('dashboard');
         }
-        
+
         return back()->withErrors([
             'email' => 'The Provided Credentials Do Not Match Our Records',
         ])->onlyInput('email');
@@ -46,7 +46,8 @@ class AuthController extends Controller
     /**
      * Show Registration Form.
      */
-    public function showRegistrationForm(){
+    public function showRegistrationForm()
+    {
         return view('auth.register');
     }
 
@@ -67,6 +68,14 @@ class AuthController extends Controller
             'password' => 'require|string|min:8|confirmed',
             'role' => 'user', //Def Role User
         ]);
+
+        // Add this to a controller method to debug
+        try {
+            // Registration code
+        } catch (\Exception $e) {
+            \Log::error('Registration error: ' . $e->getMessage());
+            return back()->withErrors(['email' => 'Registration failed: ' . $e->getMessage()]);
+        }
 
         Auth::login($user);
 

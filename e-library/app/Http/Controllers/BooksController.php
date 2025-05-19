@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\books;
 use Illuminate\Http\Request;
 
-class BookController extends Controller
+class BooksController extends Controller
 {
      /**
      * Create a new controller instance.
@@ -24,7 +24,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Books::latest()->paginate(10);
+        $books = books::latest()->paginate(10);
         return view('books.index', compact('books'));
     }
 
@@ -50,10 +50,39 @@ class BookController extends Controller
             'page_count' => 'required|string|min:1',
         ]);
 
-        Books::create($request->all());
+        books::create($request->all());
 
         return redirect()->route('books.index')
          ->with('success', 'The Book Succesfully Added');
+    }
+
+     /**
+     * Show the form for editing the specified book.
+     */
+    public function edit(books $book)
+    {
+        // Middleware admin sudah diaktifkan di constructor, tidak perlu cek lagi
+        return view('books.edit', compact('book'));
+    }
+
+    /**
+     * Update the specified book in storage.
+     */
+    public function update(Request $request, books $book)
+    {
+        // Middleware admin sudah diaktifkan di constructor, tidak perlu cek lagi
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'publisher' => 'required|string|max:255',
+            'description' => 'required|string',
+            'publication_year' => 'required|integer|min:1800|max:' . date('Y'),
+            'page_count' => 'required|integer|min:1',
+        ]);
+
+        $book->update($request->all());
+
+        return redirect()->route('books.index')
+            ->with('success', 'Buku berhasil diperbarui.');
     }
 
     /** 
